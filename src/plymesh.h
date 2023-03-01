@@ -9,8 +9,27 @@
 
 #include "agl/aglm.h"
 #include "agl/mesh/triangle_mesh.h"
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 
 namespace agl {
+
+   struct VertexInfo
+   {
+      int x;
+      int y;
+      int z;
+
+      VertexInfo(int _x, int _y, int _z)
+      {
+         x = _x;
+         y = _y;
+         z = _z;
+      }
+   };
+
    class PLYMesh : public TriangleMesh
    {
    public:
@@ -50,9 +69,20 @@ namespace agl {
 
    protected:
 
+      // gotta change names to m_
       std::vector<GLfloat> _positions;
       std::vector<GLfloat> _normals;
       std::vector<GLuint> _faces;
+
+      // std::vector<VertexInfo> m_verticies;
+      // std::vector<VertexInfo> m_polygons;
+
+   private:
+      
+      // splits string based on delimeter 
+      // src:https://www.geeksforgeeks.org/cpp-string-to-vector-using-delimiter/
+      std::vector<std::string> split(std::string str, char delimiter);
+
    };
 }
 

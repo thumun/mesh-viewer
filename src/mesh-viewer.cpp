@@ -21,7 +21,7 @@ public:
    }
 
    void setup() {
-      // mesh.load("../models/cube.ply");
+      mesh.load("../models/cube.ply");
    }
 
    void mouseMotion(int x, int y, int dx, int dy) {
