@@ -46,9 +46,14 @@ namespace agl {
       int verticiesNum = 0;
       int polygonNum = 0;
 
+      // cout << "test" << endl;
+
       if (plyFile.is_open()) {
+
          getline(plyFile, line);
-         if (line.find("ply") == string::npos || line.find("Ply") == string::npos){
+         // cout << line.find("ply") << endl;
+         if (line.find("ply") == string::npos){
+            // cout << "skipped:  " << line << endl;
             return false;
          }
 
@@ -69,21 +74,26 @@ namespace agl {
          while(plyFile){
             getline(plyFile, line);
             if (line.find("element face") == string::npos){
+               // cout << "skipped:  " << line << endl;
                continue;
             } else {
                lineItems = split(line, ' ');
                polygonNum = stoi(lineItems[lineItems.size() - 1]);
                // cout << line << endl;
-               cout << "polygon: " << polygonNum << endl;
+               // cout << "polygon: " << polygonNum << endl;
+               break;
             }
          }
 
-         
          while(plyFile){
             getline(plyFile, line);
-            if (!(line.find("end_header") == string::npos)){
+            if (line.find("end_header") == string::npos){
+               // cout << "skipped:  " << line << endl;
                continue;
-            } 
+            } else {
+               // cout << "skipped:  " << line << endl;
+               break;
+            }
          }
 
          while(plyFile){
@@ -95,6 +105,8 @@ namespace agl {
                _positions.push_back(std::stof(lineItems[1])); // y
                _positions.push_back(std::stof(lineItems[1])); // z
 
+               // cout << "vertex: " << lineItems[0] << ", " << lineItems[1] << ", " << lineItems[2] << endl; 
+
                verticiesNum -= 1; 
             } else if (polygonNum > 0){
                getline(plyFile, line);
@@ -103,6 +115,10 @@ namespace agl {
                _faces.push_back(std::stoi(lineItems[2]));
                _faces.push_back(std::stoi(lineItems[3]));
 
+               // cout << "face: " << lineItems[1] << ", " << lineItems[2] << ", " << lineItems[3] << endl;
+               polygonNum -= 1;  
+            } else {
+               break;
             }
          }
       }
