@@ -24,6 +24,9 @@ namespace agl {
    }
 
    PLYMesh::~PLYMesh() {
+      _positions.clear();
+      _normals.clear();
+      _faces.clear();
    }
 
    bool PLYMesh::load(const std::string& filename) {
@@ -31,8 +34,6 @@ namespace agl {
          std::cout << "WARNING: Cannot load different files with the same PLY mesh\n";
          return false;
       }
-      // todo: your code here
-
       // reading file inputted 
       std::ifstream plyFile; 
       std::string line; 
@@ -103,7 +104,11 @@ namespace agl {
                lineItems = split(line, ' ');
                _positions.push_back(std::stof(lineItems[0])); // x
                _positions.push_back(std::stof(lineItems[1])); // y
-               _positions.push_back(std::stof(lineItems[1])); // z
+               _positions.push_back(std::stof(lineItems[2])); // z
+
+               _normals.push_back(std::stof(lineItems[3])); // nx
+               _normals.push_back(std::stof(lineItems[4])); // ny
+               _normals.push_back(std::stof(lineItems[5])); // nz
 
                // cout << "vertex: " << lineItems[0] << ", " << lineItems[1] << ", " << lineItems[2] << endl; 
 
@@ -129,19 +134,50 @@ namespace agl {
    }
 
    glm::vec3 PLYMesh::minBounds() const {
-      return glm::vec3(0);
+
+      glm::vec3 min = glm::vec3(0); // how to initialize 
+      min.x = _positions[0];
+      min.y = _positions[1];
+      min.z = _positions[2];
+
+      for (int i = 3; i < _positions.size(); i+=3){
+         // maybe lose the = 
+         if (min.x >= _positions[i] && min.y >= _positions[i+1] && min.z >= _positions[i+2]){
+            min.x = _positions[i];
+            min.y = _positions[i+1];
+            min.z = _positions[i+2];
+         }
+      }
+
+      return min;
    }
 
    glm::vec3 PLYMesh::maxBounds() const {
-      return glm::vec3(0);
+      glm::vec3 max = glm::vec3(0); // how to initialize 
+      max.x = _positions[0];
+      max.y = _positions[1];
+      max.z = _positions[2];
+
+      for (int i = 3; i < _positions.size(); i+=3){
+         // maybe lose the = 
+         if (max.x <= _positions[i] && max.y <= _positions[i+1] && max.z <= _positions[i+2]){
+            max.x = _positions[i];
+            max.y = _positions[i+1];
+            max.z = _positions[i+2];
+         }
+      }
+
+      return max; 
    }
 
+   // am i allowed to change this 
    int PLYMesh::numVertices() const {
-      return _positions.size();
+      return _positions.size()/3;
    }
 
+   // am i allowed to change this 
    int PLYMesh::numTriangles() const {
-      return _faces.size();
+      return _faces.size()/3;
    }
 
    const std::vector<GLfloat>& PLYMesh::positions() const {

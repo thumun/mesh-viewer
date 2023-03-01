@@ -74,9 +74,6 @@ namespace agl {
       std::vector<GLfloat> _normals;
       std::vector<GLuint> _faces;
 
-      // std::vector<VertexInfo> m_verticies;
-      // std::vector<VertexInfo> m_polygons;
-
    private:
       
       // splits string based on delimeter 
