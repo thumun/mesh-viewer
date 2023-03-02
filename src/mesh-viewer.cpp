@@ -21,20 +21,20 @@ public:
    }
 
    void setup() {
-      mesh.load("../models/dolphins.ply");
 
-      // if start is always cube
-      // finding indx of cube in directory and storing as current indx 
-      // src:https://stackoverflow.com/questions/15099707/how-to-get-position-of-a-certain-element-in-strings-vector-to-use-it-as-an-inde
-      // auto temp = std::find(dir.begin(), dir.end(), "cube");
-      // if (temp != dir.end()){
-      //    int currentIndx = std::distance(dir.begin(), temp);
-      // }
 
-      // hard code for testing 
-      currentIndx = 30; 
+      // load all models at start of program 
+      std::vector<std::string> dir = GetFilenamesInDir("../models", "ply"); 
 
-      cout << "max: " << mesh.maxBounds() << ", min: " << mesh.minBounds() << endl; 
+      for (std::string file : dir){
+         meshes.push_back(PLYMesh(file));
+      }
+      currentIndx = 0; 
+
+      // below for testing: 
+
+      // mesh.load("../models/dolphins.ply");
+      cout << "max: " << meshes[0].maxBounds() << ", min: " << meshes[0].minBounds() << endl; 
 
    }
 
@@ -52,32 +52,27 @@ public:
 
    void keyUp(int key, int mods) {
       // will change to capital N 
-      if (key == GLFW_KEY_M){
+      if (key == GLFW_KEY_N && mods == GLFW_MOD_SHIFT){
 
          // cout << " capital N pressed" << endl;
 
-         if (currentIndx == dir.size()-1){
+         if (currentIndx == meshes.size()-1){
             currentIndx = 0; // check if this wld fail 
          } else {
             currentIndx += 1;
          }
          // cout << currentIndx << endl; 
 
-         // probly not my best idea 
-         // mesh.~PLYMesh();
-         // mesh.load(dir[currentIndx]);
-
 
       } else if (key == GLFW_KEY_N){
          // cout << "n pressed" << endl;
          if (currentIndx == 0){
-            currentIndx = dir.size()-1; // check if this wld fail 
+            currentIndx = meshes.size()-1; // check if this wld fail 
          } else {
             currentIndx -= 1;
          }
          // cout << currentIndx << endl; 
-         // mesh.~PLYMesh();
-         // mesh.load(dir[currentIndx]);
+ 
       }
    }
 
@@ -90,23 +85,24 @@ public:
       // renderer.scale(vec3(1,1,1));
       // renderer.translate(vec3(0,0,0));
 
+
+
       renderer.rotate(vec3(0,0,0));
       // renderer.scale(vec3(1,1,1));
-      renderer.scale(vec3(1,1,1)); // but will this always work 
+      renderer.scale(vec3(1,1,1)); 
       renderer.translate(vec3(0,0,0));
-      renderer.mesh(mesh);
+      renderer.mesh(meshes[currentIndx]);
       // renderer.cube(); // for debugging!
    }
 
 protected:
-   PLYMesh mesh;
+   // PLYMesh mesh;
+   std::vector<PLYMesh> meshes; 
    vec3 eyePos = vec3(10, 0, 0);
    vec3 lookPos = vec3(0, 0, 0);
    vec3 up = vec3(0, 1, 0);
 
 private:
-   // weird that this prints everything 
-   std::vector<std::string> dir = GetFilenamesInDir("../models", "ply"); 
    int currentIndx = 0; 
 };
 
