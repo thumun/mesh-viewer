@@ -26,31 +26,19 @@ public:
       // load all models at start of program 
       std::vector<std::string> dir = GetFilenamesInDir("../models", "ply"); 
 
-      // change for each to for loop see if it works; print index 
+      // int i = 0; 
 
-      // this loop is not working  
-      // for (int i = 0; i < dir.size(); i++){
-      //    cout << i << ": " << dir[i] << endl; 
-      //    PLYMesh model = PLYMesh(dir[i]);
-      //    // meshes.push_back(PLYMesh(dir[i]));
-      //    cout << "MIN: " << model.minBounds() << ", MAX: " << model.maxBounds() << endl;
+      // for (std::string file : dir){
+      //    meshes.push_back(PLYMesh("../models/" + file));
+      //    cout << file << endl;
+      //    cout << "MIN: " << meshes[i].minBounds() << ", MAX: " << meshes[i].maxBounds() << endl;
+      //    i += 1; 
       // }
-
-      // cout << "MIN: " << meshes[0].minBounds() << ", MAX: " << meshes[0].maxBounds() << endl;
-
-      int i = 0; 
-
-      for (std::string file : dir){
-         meshes.push_back(PLYMesh("../models/" + file));
-         cout << file << endl;
-         cout << "MIN: " << meshes[i].minBounds() << ", MAX: " << meshes[i].maxBounds() << endl;
-         i += 1; 
-      }
       currentIndx = 0; 
 
       // below for testing: 
 
-      // mesh.load("../models/saratoga.ply");
+      mesh.load("../models/saratoga.ply");
       // cout << "max: " << mesh.maxBounds() << ", min: " << mesh.minBounds() << endl; 
 
    }
@@ -102,10 +90,31 @@ public:
       // renderer.scale(vec3(1,1,1));
       // renderer.translate(vec3(0,0,0));
 
+      // scale logic: -- pretty small but scaling
+      float maxVal = fmaxf(mesh.maxBounds().x, mesh.maxBounds().y); 
+      maxVal = fmaxf(maxVal, mesh.maxBounds().z);
+
+      float maxRatio = maxVal/ 10; 
+
+      float minVal = fmaxf(mesh.minBounds().x, mesh.minBounds().y); 
+      minVal = fmaxf(minVal, mesh.minBounds().z);
+
+      float minRatio = 10 / minVal;
+
+      float scaleRatio = fmaxf(maxRatio, minRatio); 
+
+      // translate logic: 
+      vec3 mediumPos; 
+      mediumPos.x = (mesh.maxBounds().x-mesh.minBounds().x)/2;
+      mediumPos.y = (mesh.maxBounds().y-mesh.minBounds().y)/2;
+      mediumPos.z = (mesh.maxBounds().z-mesh.minBounds().z)/2;
+
+      float distToOrigin = sqrt(pow(mediumPos.x, 2) + pow(mediumPos.y, 2) + pow(mediumPos.z, 2));
+
       renderer.rotate(vec3(0,0,0));
       // renderer.scale(vec3(1,1,1));
-      renderer.scale(vec3(1,1,1)); 
-      renderer.translate(vec3(0,0,0));
+      renderer.scale(vec3(scaleRatio,scaleRatio,scaleRatio)); 
+      renderer.translate(vec3(distToOrigin,distToOrigin,distToOrigin));
       renderer.mesh(mesh);
       // renderer.cube(); // for debugging!
    }
