@@ -128,7 +128,9 @@ namespace agl {
          }
       }
 
-      plyFile.close();
+      if (plyFile.is_open()){
+         plyFile.close();
+      }
 
       return true;
    }

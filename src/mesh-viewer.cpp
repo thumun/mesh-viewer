@@ -26,15 +26,32 @@ public:
       // load all models at start of program 
       std::vector<std::string> dir = GetFilenamesInDir("../models", "ply"); 
 
+      // change for each to for loop see if it works; print index 
+
+      // this loop is not working  
+      // for (int i = 0; i < dir.size(); i++){
+      //    cout << i << ": " << dir[i] << endl; 
+      //    PLYMesh model = PLYMesh(dir[i]);
+      //    // meshes.push_back(PLYMesh(dir[i]));
+      //    cout << "MIN: " << model.minBounds() << ", MAX: " << model.maxBounds() << endl;
+      // }
+
+      // cout << "MIN: " << meshes[0].minBounds() << ", MAX: " << meshes[0].maxBounds() << endl;
+
+      int i = 0; 
+
       for (std::string file : dir){
-         meshes.push_back(PLYMesh(file));
+         meshes.push_back(PLYMesh("../models/" + file));
+         cout << file << endl;
+         cout << "MIN: " << meshes[i].minBounds() << ", MAX: " << meshes[i].maxBounds() << endl;
+         i += 1; 
       }
       currentIndx = 0; 
 
       // below for testing: 
 
-      // mesh.load("../models/dolphins.ply");
-      cout << "max: " << meshes[0].maxBounds() << ", min: " << meshes[0].minBounds() << endl; 
+      // mesh.load("../models/saratoga.ply");
+      // cout << "max: " << mesh.maxBounds() << ", min: " << mesh.minBounds() << endl; 
 
    }
 
@@ -85,18 +102,16 @@ public:
       // renderer.scale(vec3(1,1,1));
       // renderer.translate(vec3(0,0,0));
 
-
-
       renderer.rotate(vec3(0,0,0));
       // renderer.scale(vec3(1,1,1));
       renderer.scale(vec3(1,1,1)); 
       renderer.translate(vec3(0,0,0));
-      renderer.mesh(meshes[currentIndx]);
+      renderer.mesh(mesh);
       // renderer.cube(); // for debugging!
    }
 
 protected:
-   // PLYMesh mesh;
+   PLYMesh mesh;
    std::vector<PLYMesh> meshes; 
    vec3 eyePos = vec3(10, 0, 0);
    vec3 lookPos = vec3(0, 0, 0);
