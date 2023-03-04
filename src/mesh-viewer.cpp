@@ -38,7 +38,7 @@ public:
 
       // below for testing: 
 
-      mesh.load("../models/cube.ply");
+      mesh.load("../models/saratoga.ply");
       cout << "max: " << mesh.maxBounds() << ", min: " << mesh.minBounds() << endl; 
 
    }
@@ -91,7 +91,6 @@ public:
       // renderer.translate(vec3(0,0,0));
 
       renderer.rotate(vec3(0,0,0));
-      // renderer.scale(vec3(1,1,1));
       renderer.scale(vec3(mesh.getScaleRatio())); 
       renderer.translate(mesh.getTranslateVal());
       renderer.mesh(mesh);

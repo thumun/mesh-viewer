@@ -212,9 +212,9 @@ namespace agl {
       vec3 mediumPos; 
 
       float scaleRatio = getScaleRatio();
-      mediumPos.x = scaleRatio*(maxBounds().x-minBounds().x)/2;
-      mediumPos.y = scaleRatio*(maxBounds().y-minBounds().y)/2;
-      mediumPos.z = scaleRatio*(maxBounds().z-minBounds().z)/2;
+      mediumPos.x = scaleRatio*(maxBounds().x+minBounds().x)/2;
+      mediumPos.y = scaleRatio*(maxBounds().y+minBounds().y)/2;
+      mediumPos.z = scaleRatio*(maxBounds().z+minBounds().z)/2;
 
       return mediumPos;
    }
