@@ -45,9 +45,9 @@ public:
 
    // maybe change floats to int in future
    void computeCamPos(int r, int a, int e){
-      camPos.x = r*sin(a)*cos(e);
+      camPos.x = r*cos(a)*cos(e);
       camPos.y = r*sin(e);
-      camPos.z = r*cos(a)*cos(e);
+      camPos.z = r*sin(a)*cos(e);
    }
 
    void mouseMotion(int x, int y, int dx, int dy) {
