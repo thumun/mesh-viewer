@@ -28,18 +28,18 @@ public:
 
       // int i = 0; 
 
-      // for (std::string file : dir){
-      //    meshes.push_back(PLYMesh("../models/" + file));
-      //    cout << file << endl;
-      //    cout << "MIN: " << meshes[i].minBounds() << ", MAX: " << meshes[i].maxBounds() << endl;
-      //    i += 1; 
-      // }
+      for (std::string file : dir){
+         meshes.push_back(PLYMesh("../models/" + file));
+         // cout << file << endl;
+         // cout << "MIN: " << meshes[i].minBounds() << ", MAX: " << meshes[i].maxBounds() << endl;
+         // i += 1; 
+      }
       currentIndx = 0; 
 
       // below for testing: 
 
       mesh.load("../models/saratoga.ply");
-      // cout << "max: " << mesh.maxBounds() << ", min: " << mesh.minBounds() << endl; 
+      cout << "max: " << mesh.maxBounds() << ", min: " << mesh.minBounds() << endl; 
 
    }
 
@@ -91,17 +91,25 @@ public:
       // renderer.translate(vec3(0,0,0));
 
       // scale logic: -- pretty small but scaling
-      float maxVal = fmaxf(mesh.maxBounds().x, mesh.maxBounds().y); 
-      maxVal = fmaxf(maxVal, mesh.maxBounds().z);
 
-      float maxRatio = maxVal/ 10; 
+      float scaleRatio;
 
-      float minVal = fmaxf(mesh.minBounds().x, mesh.minBounds().y); 
-      minVal = fmaxf(minVal, mesh.minBounds().z);
+      vec3 magnitude; 
+      magnitude.x = abs(mesh.maxBounds().x - mesh.minBounds().x);
+      magnitude.y = abs(mesh.maxBounds().y - mesh.minBounds().y);
+      magnitude.z = abs(mesh.maxBounds().z - mesh.minBounds().z);
 
-      float minRatio = 10 / minVal;
+      if (magnitude.x > 10 || magnitude.y > 10 || magnitude.z > 10){
+         float scale = fmaxf(magnitude.x, magnitude.y); 
+         scale = fmaxf(scale, magnitude.z);
 
-      float scaleRatio = fmaxf(maxRatio, minRatio); 
+         scaleRatio = 10 / scale; 
+
+      } else {
+         scaleRatio = 1.0f; 
+      }
+
+      // cout << "scale: " << scaleRatio << endl;
 
       // translate logic: 
       vec3 mediumPos; 
@@ -109,12 +117,12 @@ public:
       mediumPos.y = (mesh.maxBounds().y-mesh.minBounds().y)/2;
       mediumPos.z = (mesh.maxBounds().z-mesh.minBounds().z)/2;
 
-      float distToOrigin = sqrt(pow(mediumPos.x, 2) + pow(mediumPos.y, 2) + pow(mediumPos.z, 2));
+      // float distToOrigin = sqrt(pow(mediumPos.x, 2) + pow(mediumPos.y, 2) + pow(mediumPos.z, 2));
 
       renderer.rotate(vec3(0,0,0));
       // renderer.scale(vec3(1,1,1));
       renderer.scale(vec3(scaleRatio,scaleRatio,scaleRatio)); 
-      renderer.translate(vec3(distToOrigin,distToOrigin,distToOrigin));
+      renderer.translate(vec3(mediumPos.x,mediumPos.y,mediumPos.z));
       renderer.mesh(mesh);
       // renderer.cube(); // for debugging!
    }

@@ -143,12 +143,9 @@ namespace agl {
       min.z = _positions[2];
 
       for (int i = 3; i < _positions.size(); i+=3){
-         // maybe lose the = 
-         if (min.x >= _positions[i] && min.y >= _positions[i+1] && min.z >= _positions[i+2]){
-            min.x = _positions[i];
-            min.y = _positions[i+1];
-            min.z = _positions[i+2];
-         }
+         min.x = fminf(min.x, _positions[i]);
+         min.y = fminf(min.y, _positions[i+1]);
+         min.z = fminf(min.z, _positions[i+2]);
       }
 
       return min;
@@ -161,12 +158,9 @@ namespace agl {
       max.z = _positions[2];
 
       for (int i = 3; i < _positions.size(); i+=3){
-         // maybe lose the = 
-         if (max.x <= _positions[i] && max.y <= _positions[i+1] && max.z <= _positions[i+2]){
-            max.x = _positions[i];
-            max.y = _positions[i+1];
-            max.z = _positions[i+2];
-         }
+         max.x = fmaxf(max.x, _positions[i]);
+         max.y = fmaxf(max.y, _positions[i+1]);
+         max.z = fmaxf(max.z, _positions[i+2]);
       }
 
       return max; 
