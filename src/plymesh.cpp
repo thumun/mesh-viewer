@@ -211,10 +211,10 @@ namespace agl {
    vec3 PLYMesh::getTranslateVal() {
       vec3 mediumPos; 
 
-      float scaleRatio = getScaleRatio();
-      mediumPos.x = scaleRatio*(maxBounds().x+minBounds().x)/2;
-      mediumPos.y = scaleRatio*(maxBounds().y+minBounds().y)/2;
-      mediumPos.z = scaleRatio*(maxBounds().z+minBounds().z)/2;
+      float scaleRatio = 1.0f;
+      mediumPos.x = -1*scaleRatio*(maxBounds().x+minBounds().x)/2;
+      mediumPos.y = -1*scaleRatio*(maxBounds().y+minBounds().y)/2;
+      mediumPos.z = -1*scaleRatio*(maxBounds().z+minBounds().z)/2;
 
       return mediumPos;
    }

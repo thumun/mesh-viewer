@@ -43,13 +43,55 @@ public:
 
    }
 
+   // maybe change floats to int in future
+   void computeCamPos(int r, int a, int e){
+      camPos.x = r*sin(a)*cos(e);
+      camPos.y = r*sin(e);
+      camPos.z = r*cos(a)*cos(e);
+   }
+
    void mouseMotion(int x, int y, int dx, int dy) {
+
+      // mapping not look good 
+      // azimuth = acos(x/radius);
+      // elevation = asin(y/radius);
+
+      if (dx > 0){
+         azimuth += 0.5f;
+         if (azimuth > 2*M_PI ){
+            azimuth = 0; 
+         }
+      } else {
+         azimuth -= 0.5f; 
+         if (azimuth < 0 ){
+            azimuth = 2*M_PI; 
+         }
+      }
+
+      if (dy > 0){
+         elevation += 0.5f;
+         if (elevation > M_PI ){
+            elevation = -1*M_PI; 
+         }
+      } else {
+         elevation -= 0.5f; 
+         if (elevation < -1*M_PI ){
+            elevation = M_PI; 
+         }
+      }
+
    }
 
    void mouseDown(int button, int mods) {
+      // moving camera backward - change r
+      // radius -= 1;
+      // computeCamPos(radius, azimuth, elevation);
    }
 
    void mouseUp(int button, int mods) {
+      // moving camera forward - change r 
+      // radius += 1;
+      // computeCamPos(radius, azimuth, elevation);
    }
 
    void scroll(float dx, float dy) {
@@ -78,25 +120,45 @@ public:
          }
          // cout << currentIndx << endl; 
  
+      } else if (key == GLFW_KEY_LEFT) {
+
+      } else if (key == GLFW_KEY_RIGHT) {
+
+      } else if (key == GLFW_KEY_UP){
+         // moving camera forward - change r
+         radius += 1;
+
+      } else if (key == GLFW_KEY_DOWN){
+         // moving camera backward - change r
+         radius -= 1;
       }
    }
 
    void draw() {
       float aspect = ((float)width()) / height();
       renderer.perspective(glm::radians(60.0f), aspect, 0.1f, 50.0f);
-      renderer.lookAt(eyePos, lookPos, up);
+      // renderer.lookAt(eyePos, lookPos, up);
+
+      computeCamPos(radius, azimuth, elevation);
+      vec3 x = cross(up, camPos);
+      vec3 y = cross(camPos, x);
+      vec3 z = cross(x, y);
+
+      renderer.lookAt(camPos, lookPos, z);
+
+      // renderer.lookAt(camPos, lookPos, up);
 
       // renderer.rotate(vec3(0,0,0));
       // renderer.scale(vec3(1,1,1));
       // renderer.translate(vec3(0,0,0));
 
       renderer.rotate(vec3(0,0,0));
-      renderer.scale(vec3(mesh.getScaleRatio())); 
-      renderer.translate(mesh.getTranslateVal());
-      renderer.mesh(mesh);
-      // renderer.scale(vec3(meshes[currentIndx].getScaleRatio())); 
-      // renderer.translate(meshes[currentIndx].getTranslateVal());
-      // renderer.mesh(meshes[currentIndx]);
+      // renderer.scale(vec3(mesh.getScaleRatio())); 
+      // renderer.translate(mesh.getTranslateVal());
+      // renderer.mesh(mesh);
+      renderer.scale(vec3(meshes[currentIndx].getScaleRatio())); 
+      renderer.translate(meshes[currentIndx].getTranslateVal());
+      renderer.mesh(meshes[currentIndx]);
       // renderer.cube(); // for debugging!
    }
 
@@ -106,6 +168,10 @@ protected:
    vec3 eyePos = vec3(10, 0, 0);
    vec3 lookPos = vec3(0, 0, 0);
    vec3 up = vec3(0, 1, 0);
+   vec3 camPos = eyePos;
+   float azimuth = 0; 
+   float elevation = 0; 
+   float radius = 10.0f; 
 
 private:
    int currentIndx = 0; 
