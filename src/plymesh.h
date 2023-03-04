@@ -64,15 +64,23 @@ namespace agl {
       // face indices in this model
       const std::vector<GLuint>& indices() const;
 
+      // getting the amount to scale a model by to fit in 10x10x10 window
+      float getScaleRatio(); 
+
+      // getting the vector for centering model at 0,0 
+      glm::vec3 getTranslateVal(); 
+
    protected:
       void init();
 
    protected:
 
-      // gotta change names to m_
       std::vector<GLfloat> _positions;
       std::vector<GLfloat> _normals;
       std::vector<GLuint> _faces;
+
+      glm::vec3 _maxBounds;
+      glm::vec3 _minBounds;
 
    private:
       

@@ -38,8 +38,8 @@ public:
 
       // below for testing: 
 
-      mesh.load("../models/saratoga.ply");
-      cout << "max: " << mesh.maxBounds() << ", min: " << mesh.minBounds() << endl; 
+      // mesh.load("../models/saratoga.ply");
+      // cout << "max: " << mesh.maxBounds() << ", min: " << mesh.minBounds() << endl; 
 
    }
 
@@ -90,45 +90,16 @@ public:
       // renderer.scale(vec3(1,1,1));
       // renderer.translate(vec3(0,0,0));
 
-      // scale logic: -- pretty small but scaling
-
-      float scaleRatio;
-
-      vec3 magnitude; 
-      magnitude.x = abs(mesh.maxBounds().x - mesh.minBounds().x);
-      magnitude.y = abs(mesh.maxBounds().y - mesh.minBounds().y);
-      magnitude.z = abs(mesh.maxBounds().z - mesh.minBounds().z);
-
-      if (magnitude.x > 10 || magnitude.y > 10 || magnitude.z > 10){
-         float scale = fmaxf(magnitude.x, magnitude.y); 
-         scale = fmaxf(scale, magnitude.z);
-
-         scaleRatio = 10 / scale; 
-
-      } else {
-         scaleRatio = 1.0f; 
-      }
-
-      // cout << "scale: " << scaleRatio << endl;
-
-      // translate logic: 
-      vec3 mediumPos; 
-      mediumPos.x = (mesh.maxBounds().x-mesh.minBounds().x)/2;
-      mediumPos.y = (mesh.maxBounds().y-mesh.minBounds().y)/2;
-      mediumPos.z = (mesh.maxBounds().z-mesh.minBounds().z)/2;
-
-      // float distToOrigin = sqrt(pow(mediumPos.x, 2) + pow(mediumPos.y, 2) + pow(mediumPos.z, 2));
-
       renderer.rotate(vec3(0,0,0));
       // renderer.scale(vec3(1,1,1));
-      renderer.scale(vec3(scaleRatio,scaleRatio,scaleRatio)); 
-      renderer.translate(vec3(mediumPos.x,mediumPos.y,mediumPos.z));
-      renderer.mesh(mesh);
+      renderer.scale(vec3(meshes[currentIndx].getScaleRatio())); 
+      renderer.translate(meshes[currentIndx].getTranslateVal());
+      renderer.mesh(meshes[currentIndx]);
       // renderer.cube(); // for debugging!
    }
 
 protected:
-   PLYMesh mesh;
+   // PLYMesh mesh;
    std::vector<PLYMesh> meshes; 
    vec3 eyePos = vec3(10, 0, 0);
    vec3 lookPos = vec3(0, 0, 0);
