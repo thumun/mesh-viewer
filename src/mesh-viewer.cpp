@@ -56,29 +56,54 @@ public:
       // azimuth = acos(x/radius);
       // elevation = asin(y/radius);
 
-      if (dx > 0){
-         azimuth += 0.5f;
-         if (azimuth > 2*M_PI ){
-            azimuth = 0; 
+      if(isMousePress){
+         if (dx > 0){
+         azimuth += 0.01;
+            if (azimuth > 2*M_PI ){
+               azimuth = 0; 
+            }
+         } else {
+            azimuth -= 0.01f; 
+            if (azimuth < 0 ){
+               azimuth = 2*M_PI; 
+            }
          }
-      } else {
-         azimuth -= 0.5f; 
-         if (azimuth < 0 ){
-            azimuth = 2*M_PI; 
+         if (dy > 0){
+            elevation += 0.5f;
+            if (elevation > M_PI ){
+               elevation = -1*M_PI; 
+            }
+         } else {
+            elevation -= 0.5f; 
+            if (elevation < -1*M_PI ){
+               elevation = M_PI; 
+            }
          }
       }
 
-      if (dy > 0){
-         elevation += 0.5f;
-         if (elevation > M_PI ){
-            elevation = -1*M_PI; 
-         }
-      } else {
-         elevation -= 0.5f; 
-         if (elevation < -1*M_PI ){
-            elevation = M_PI; 
-         }
-      }
+      // if (dx > 0){
+      //    azimuth += 0.5f;
+      //    if (azimuth > 2*M_PI ){
+      //       azimuth = 0; 
+      //    }
+      // } else {
+      //    azimuth -= 0.5f; 
+      //    if (azimuth < 0 ){
+      //       azimuth = 2*M_PI; 
+      //    }
+      // }
+
+      // if (dy > 0){
+      //    elevation += 0.5f;
+      //    if (elevation > M_PI ){
+      //       elevation = -1*M_PI; 
+      //    }
+      // } else {
+      //    elevation -= 0.5f; 
+      //    if (elevation < -1*M_PI ){
+      //       elevation = M_PI; 
+      //    }
+      // }
 
    }
 
@@ -86,12 +111,18 @@ public:
       // moving camera backward - change r
       // radius -= 1;
       // computeCamPos(radius, azimuth, elevation);
+      if (button == GLFW_MOUSE_BUTTON_LEFT){
+         isMousePress = true; 
+      }
    }
 
    void mouseUp(int button, int mods) {
       // moving camera forward - change r 
       // radius += 1;
       // computeCamPos(radius, azimuth, elevation);
+      if (button == GLFW_MOUSE_BUTTON_LEFT){
+         isMousePress = false; 
+      }
    }
 
    void scroll(float dx, float dy) {
@@ -120,17 +151,13 @@ public:
          }
          // cout << currentIndx << endl; 
  
-      } else if (key == GLFW_KEY_LEFT) {
-
-      } else if (key == GLFW_KEY_RIGHT) {
-
       } else if (key == GLFW_KEY_UP){
          // moving camera forward - change r
-         radius += 1;
+         radius += 0.5;
 
       } else if (key == GLFW_KEY_DOWN){
          // moving camera backward - change r
-         radius -= 1;
+         radius -= 0.5;
       }
    }
 
@@ -172,6 +199,7 @@ protected:
    float azimuth = 0; 
    float elevation = 0; 
    float radius = 10.0f; 
+   bool isMousePress = false;
 
 private:
    int currentIndx = 0; 
