@@ -79,9 +79,6 @@ namespace agl {
       std::vector<GLfloat> _normals;
       std::vector<GLuint> _faces;
 
-      glm::vec3 _maxBounds;
-      glm::vec3 _minBounds;
-
    private:
       
       // splits string based on delimeter 

@@ -38,8 +38,8 @@ public:
 
       // below for testing: 
 
-      // mesh.load("../models/saratoga.ply");
-      // cout << "max: " << mesh.maxBounds() << ", min: " << mesh.minBounds() << endl; 
+      mesh.load("../models/cube.ply");
+      cout << "max: " << mesh.maxBounds() << ", min: " << mesh.minBounds() << endl; 
 
    }
 
@@ -92,14 +92,17 @@ public:
 
       renderer.rotate(vec3(0,0,0));
       // renderer.scale(vec3(1,1,1));
-      renderer.scale(vec3(meshes[currentIndx].getScaleRatio())); 
-      renderer.translate(meshes[currentIndx].getTranslateVal());
-      renderer.mesh(meshes[currentIndx]);
+      renderer.scale(vec3(mesh.getScaleRatio())); 
+      renderer.translate(mesh.getTranslateVal());
+      renderer.mesh(mesh);
+      // renderer.scale(vec3(meshes[currentIndx].getScaleRatio())); 
+      // renderer.translate(meshes[currentIndx].getTranslateVal());
+      // renderer.mesh(meshes[currentIndx]);
       // renderer.cube(); // for debugging!
    }
 
 protected:
-   // PLYMesh mesh;
+   PLYMesh mesh;
    std::vector<PLYMesh> meshes; 
    vec3 eyePos = vec3(10, 0, 0);
    vec3 lookPos = vec3(0, 0, 0);

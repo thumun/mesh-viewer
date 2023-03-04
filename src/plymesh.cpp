@@ -5,7 +5,6 @@
 //--------------------------------------------------
 
 #include "plymesh.h"
-#include <limits>
 
 using namespace std;
 using namespace glm;
@@ -14,8 +13,6 @@ namespace agl {
 
    PLYMesh::PLYMesh(const std::string& filename) {
       load(filename);
-      _minBounds = glm::vec3(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
-      _maxBounds = glm::vec3(std::numeric_limits<float>::min(), std::numeric_limits<float>::min(), std::numeric_limits<float>::min());
    }
 
    PLYMesh::PLYMesh() {
@@ -135,26 +132,38 @@ namespace agl {
          plyFile.close();
       }
 
-      // calculating max & min bounds 
-      for (int i = 0; i < _positions.size(); i++){
-         _maxBounds.x = fmaxf(_maxBounds.x, _positions[i]);
-         _maxBounds.y = fmaxf(_maxBounds.y, _positions[i+1]);
-         _maxBounds.z = fmaxf(_maxBounds.z, _positions[i+2]);
-
-         _minBounds.x = fminf(_minBounds.x, _positions[i]);
-         _minBounds.y = fminf(_minBounds.y, _positions[i+1]);
-         _minBounds.z = fminf(_minBounds.z, _positions[i+2]);
-      }
-
       return true;
    }
 
    glm::vec3 PLYMesh::minBounds() const {
-      return _minBounds;
+
+      glm::vec3 min = glm::vec3(0); 
+      min.x = _positions[0];
+      min.y = _positions[1];
+      min.z = _positions[2];
+
+      for (int i = 3; i < _positions.size(); i+=3){
+         min.x = fminf(min.x, _positions[i]);
+         min.y = fminf(min.y, _positions[i+1]);
+         min.z = fminf(min.z, _positions[i+2]);
+      }
+
+      return min;
    }
 
    glm::vec3 PLYMesh::maxBounds() const {
-      return _maxBounds; 
+      glm::vec3 max = glm::vec3(0); 
+      max.x = _positions[0];
+      max.y = _positions[1];
+      max.z = _positions[2];
+
+      for (int i = 3; i < _positions.size(); i+=3){
+         max.x = fmaxf(max.x, _positions[i]);
+         max.y = fmaxf(max.y, _positions[i+1]);
+         max.z = fmaxf(max.z, _positions[i+2]);
+      }
+
+      return max; 
    }
 
    // am i allowed to change this 
@@ -199,7 +208,7 @@ namespace agl {
       return scaleRatio;
    }
 
-   glm::vec3 PLYMesh::getTranslateVal() {
+   vec3 PLYMesh::getTranslateVal() {
       vec3 mediumPos; 
 
       float scaleRatio = getScaleRatio();
