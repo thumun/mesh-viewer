@@ -9,10 +9,12 @@ uniform mat4 ModelViewMatrix;
 uniform mat4 MVP;
 uniform bool HasUV;
 
+out vec3 normalOutput; 
+
 void main()
 {
+
    gl_Position = MVP * vec4(vPos, 1.0);
-   // need normalized & conver to color in fs ? 
-   
+   normalOutput = vec3( ((vNormal.x + 1)/2), ((vNormal.y + 1)/2), ((vNormal.z + 1)/2) );
 
 }

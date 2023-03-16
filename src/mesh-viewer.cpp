@@ -35,9 +35,9 @@ public:
       // add more shaders as make them 
 
       // loading the shaders at start of program 
-      // for (string s: shaders){
-      //    renderer.loadShader(s, "../shaders/"+s+".vs", "../shaders/"+s+".fs");
-      // }
+      for (string s: shaders){
+         renderer.loadShader(s, "../shaders/"+s+".vs", "../shaders/"+s+".fs");
+      }
 
       meshIndx = 0; 
       shaderIndx = 0; 
@@ -59,8 +59,8 @@ public:
 
       if(isMousePress){
 
-         azimuth += dx*0.01f; 
-         elevation += dy*0.01f; 
+         azimuth += (float)dx*0.01f; 
+         elevation += (float)dy*0.01f; 
 
          if (elevation > M_PI/2){
             elevation = -1*M_PI/2;
@@ -123,9 +123,21 @@ public:
       } else if (key == GLFW_KEY_DOWN){
          // moving camera backward - change r
          radius -= 0.5;
-      } else if (key == GLFW_KEY_S || (key == GLFW_KEY_S && mods == GLFW_MOD_SHIFT)){
+      } else if (key == GLFW_KEY_S){
          // cycling to next shader 
-
+         if (shaderIndx == shaders.size()-1){
+            shaderIndx = 0;
+         } else { 
+            shaderIndx +=1; 
+         }
+         
+      } else if ((key == GLFW_KEY_S && mods == GLFW_MOD_SHIFT)){
+         // going to previous shader 
+         if (shaderIndx == 0){
+            shaderIndx = shaders.size()-1;
+         } else { 
+            shaderIndx -=1; 
+         }
       }
       cout << meshes[meshIndx]._filename << endl; 
       cout << "maxbounds: " << meshes[meshIndx].maxBounds() << endl; 
@@ -133,12 +145,11 @@ public:
    }
 
    void draw() {
+      renderer.beginShader(shaders[shaderIndx]);
       float aspect = ((float)width()) / height();
       renderer.perspective(glm::radians(60.0f), aspect, 0.1f, 50.0f);
-      // renderer.lookAt(eyePos, lookPos, up);
 
       computeCamPos(radius, azimuth, elevation);
-      // vec3 x = cross(up, camPos);
       vec3 z = normalize(camPos-lookPos);
       vec3 x = cross(up, z);
       vec3 y = cross(z, x);
@@ -147,18 +158,12 @@ public:
 
       // renderer.lookAt(eyePos, lookPos, up);
 
-      // renderer.rotate(vec3(0,0,0));
-      // renderer.scale(vec3(1,1,1));
-      // renderer.translate(vec3(0,0,0));
-
       renderer.rotate(vec3(0,0,0));
-      // renderer.scale(vec3(mesh.getScaleRatio())); 
-      // renderer.translate(mesh.getTranslateVal());
-      // renderer.mesh(mesh);
       renderer.scale(vec3(meshes[meshIndx].getScaleRatio())); 
       renderer.translate(meshes[meshIndx].getTranslateVal());
       renderer.mesh(meshes[meshIndx]);
       // renderer.cube(); // for debugging!
+      renderer.endShader();
    }
 
 protected:
