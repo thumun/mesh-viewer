@@ -70,6 +70,8 @@ namespace agl {
       // getting the vector for centering model at 0,0 
       glm::vec3 getTranslateVal(); 
 
+      std::string _filename; 
+
    protected:
       void init();
 

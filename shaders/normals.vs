@@ -12,4 +12,7 @@ uniform bool HasUV;
 void main()
 {
    gl_Position = MVP * vec4(vPos, 1.0);
+   // need normalized & conver to color in fs ? 
+   
+
 }

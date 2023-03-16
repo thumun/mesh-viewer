@@ -12,6 +12,7 @@ using namespace glm;
 namespace agl {
 
    PLYMesh::PLYMesh(const std::string& filename) {
+      _filename = filename;
       load(filename);
    }
 
@@ -191,21 +192,14 @@ namespace agl {
    float PLYMesh::getScaleRatio() {
       float scaleRatio; 
       vec3 magnitude; 
+      float scale;
       magnitude.x = abs(maxBounds().x - minBounds().x);
       magnitude.y = abs(maxBounds().y - minBounds().y);
       magnitude.z = abs(maxBounds().z - minBounds().z);
 
-      if (magnitude.x > 10 || magnitude.y > 10 || magnitude.z > 10){
-         float scale = fmaxf(magnitude.x, magnitude.y); 
-         scale = fmaxf(scale, magnitude.z);
+      scale = 6.0f/(fmaxf(fmaxf(magnitude.x, magnitude.y), magnitude.z));
 
-         scaleRatio = 10 / scale; 
-
-      } else {
-         scaleRatio = 1.0f; 
-      }
-
-      return scaleRatio;
+      return scale;
    }
 
    vec3 PLYMesh::getTranslateVal() {

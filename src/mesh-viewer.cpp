@@ -22,24 +22,25 @@ public:
 
    void setup() {
 
-
       // load all models at start of program 
       std::vector<std::string> dir = GetFilenamesInDir("../models", "ply"); 
 
-      // int i = 0; 
-
       for (std::string file : dir){
          meshes.push_back(PLYMesh("../models/" + file));
-         // cout << file << endl;
-         // cout << "MIN: " << meshes[i].minBounds() << ", MAX: " << meshes[i].maxBounds() << endl;
-         // i += 1; 
       }
-      currentIndx = 0; 
+      
+      shaders.push_back("normals");
+      shaders.push_back("phong-vertex");
+      shaders.push_back("phong-pixel");
+      // add more shaders as make them 
 
-      // below for testing: 
+      // loading the shaders at start of program 
+      // for (string s: shaders){
+      //    renderer.loadShader(s, "../shaders/"+s+".vs", "../shaders/"+s+".fs");
+      // }
 
-      mesh.load("../models/saratoga.ply");
-      cout << "max: " << mesh.maxBounds() << ", min: " << mesh.minBounds() << endl; 
+      meshIndx = 0; 
+      shaderIndx = 0; 
 
    }
 
@@ -57,53 +58,17 @@ public:
       // elevation = asin(y/radius);
 
       if(isMousePress){
-         if (dx > 0){
-         azimuth += 0.01;
-            if (azimuth > 2*M_PI ){
-               azimuth = 0; 
-            }
-         } else {
-            azimuth -= 0.01f; 
-            if (azimuth < 0 ){
-               azimuth = 2*M_PI; 
-            }
-         }
-         if (dy > 0){
-            elevation += 0.5f;
-            if (elevation > M_PI ){
-               elevation = -1*M_PI; 
-            }
-         } else {
-            elevation -= 0.5f; 
-            if (elevation < -1*M_PI ){
-               elevation = M_PI; 
-            }
+
+         azimuth += dx*0.01f; 
+         elevation += dy*0.01f; 
+
+         if (elevation > M_PI/2){
+            elevation = -1*M_PI/2;
+
+         } else if (elevation < -M_PI/2){
+            elevation = M_PI/2;
          }
       }
-
-      // if (dx > 0){
-      //    azimuth += 0.5f;
-      //    if (azimuth > 2*M_PI ){
-      //       azimuth = 0; 
-      //    }
-      // } else {
-      //    azimuth -= 0.5f; 
-      //    if (azimuth < 0 ){
-      //       azimuth = 2*M_PI; 
-      //    }
-      // }
-
-      // if (dy > 0){
-      //    elevation += 0.5f;
-      //    if (elevation > M_PI ){
-      //       elevation = -1*M_PI; 
-      //    }
-      // } else {
-      //    elevation -= 0.5f; 
-      //    if (elevation < -1*M_PI ){
-      //       elevation = M_PI; 
-      //    }
-      // }
 
    }
 
@@ -134,20 +99,20 @@ public:
 
          // cout << " capital N pressed" << endl;
 
-         if (currentIndx == meshes.size()-1){
-            currentIndx = 0; // check if this wld fail 
+         if (meshIndx == meshes.size()-1){
+            meshIndx = 0; // check if this wld fail 
          } else {
-            currentIndx += 1;
+            meshIndx += 1;
          }
          // cout << currentIndx << endl; 
 
 
       } else if (key == GLFW_KEY_N){
          // cout << "n pressed" << endl;
-         if (currentIndx == 0){
-            currentIndx = meshes.size()-1; // check if this wld fail 
+         if (meshIndx == 0){
+            meshIndx = meshes.size()-1; // check if this wld fail 
          } else {
-            currentIndx -= 1;
+            meshIndx -= 1;
          }
          // cout << currentIndx << endl; 
  
@@ -158,7 +123,13 @@ public:
       } else if (key == GLFW_KEY_DOWN){
          // moving camera backward - change r
          radius -= 0.5;
+      } else if (key == GLFW_KEY_S || (key == GLFW_KEY_S && mods == GLFW_MOD_SHIFT)){
+         // cycling to next shader 
+
       }
+      cout << meshes[meshIndx]._filename << endl; 
+      cout << "maxbounds: " << meshes[meshIndx].maxBounds() << endl; 
+      cout << "minbounds: " << meshes[meshIndx].minBounds() << endl; 
    }
 
    void draw() {
@@ -167,13 +138,14 @@ public:
       // renderer.lookAt(eyePos, lookPos, up);
 
       computeCamPos(radius, azimuth, elevation);
-      vec3 x = cross(up, camPos);
-      vec3 y = cross(camPos, x);
-      vec3 z = cross(x, y);
+      // vec3 x = cross(up, camPos);
+      vec3 z = normalize(camPos-lookPos);
+      vec3 x = cross(up, z);
+      vec3 y = cross(z, x);
 
-      renderer.lookAt(camPos, lookPos, z);
+      renderer.lookAt(camPos, lookPos, y);
 
-      // renderer.lookAt(camPos, lookPos, up);
+      // renderer.lookAt(eyePos, lookPos, up);
 
       // renderer.rotate(vec3(0,0,0));
       // renderer.scale(vec3(1,1,1));
@@ -183,15 +155,16 @@ public:
       // renderer.scale(vec3(mesh.getScaleRatio())); 
       // renderer.translate(mesh.getTranslateVal());
       // renderer.mesh(mesh);
-      renderer.scale(vec3(meshes[currentIndx].getScaleRatio())); 
-      renderer.translate(meshes[currentIndx].getTranslateVal());
-      renderer.mesh(meshes[currentIndx]);
+      renderer.scale(vec3(meshes[meshIndx].getScaleRatio())); 
+      renderer.translate(meshes[meshIndx].getTranslateVal());
+      renderer.mesh(meshes[meshIndx]);
       // renderer.cube(); // for debugging!
    }
 
 protected:
    PLYMesh mesh;
    std::vector<PLYMesh> meshes; 
+   std::vector<string> shaders; 
    vec3 eyePos = vec3(10, 0, 0);
    vec3 lookPos = vec3(0, 0, 0);
    vec3 up = vec3(0, 1, 0);
@@ -202,7 +175,8 @@ protected:
    bool isMousePress = false;
 
 private:
-   int currentIndx = 0; 
+   int meshIndx; 
+   int shaderIndx; 
 };
 
 int main(int argc, char** argv)
