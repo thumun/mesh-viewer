@@ -59,8 +59,8 @@ public:
 
       if(isMousePress){
 
-         azimuth += (float)dx*0.1f; 
-         elevation += (float)dy*0.05f; 
+         azimuth += (float)dx; 
+         elevation += (float)dy; 
 
          if (elevation > M_PI/2){
             elevation = -1*M_PI/2;
@@ -146,6 +146,23 @@ public:
 
    void draw() {
       renderer.beginShader(shaders[shaderIndx]);
+
+      //http://learnwebgl.brown37.net/09_lights/lights_combined.html
+      // used above to find numbers for lights 
+      renderer.setUniform("Light.Position", 20, 20, 20, 1);
+      renderer.setUniform("Light.La", 0.4, 0.2, 0.2);
+      // hoping for a yellow color for light 
+      renderer.setUniform("Light.Ld", 1.0, 1.0, 0.7);
+      renderer.setUniform("Light.Ls", 1.0, 1.0, 0.7);
+
+      //https://learnopengl.com/Lighting/Materials
+      // http://devernay.free.fr/cours/opengl/materials.html
+      // above link has table of materials -- used below (jade)
+      renderer.setUniform("Material.Ka", 0.135, 0.2225, 0.1575);
+      renderer.setUniform("Material.Kd", 0.54, 0.89, 0.63);
+      renderer.setUniform("Material.Ks", 0.316228, 0.316228, 0.316228);
+      renderer.setUniform("Material.Shininess", 0.1f);
+
       float aspect = ((float)width()) / height();
       renderer.perspective(glm::radians(60.0f), aspect, 0.1f, 50.0f);
 
