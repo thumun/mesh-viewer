@@ -10,6 +10,7 @@ uniform mat4 MVP;
 uniform bool HasUV;
 
 out vec3 norm;
+out float vecPos; 
 
 void main(void)
 {
@@ -18,5 +19,6 @@ void main(void)
     //gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
 
     norm = normalize(NormalMatrix * vNormals);
+    vecPos = dot(vPos, vNormals);
     gl_Position = MVP * vec4(vPos, 1.0);
 }
