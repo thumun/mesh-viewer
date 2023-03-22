@@ -59,8 +59,8 @@ public:
 
       if(isMousePress){
 
-         azimuth += (float)dx; 
-         elevation += (float)dy; 
+         azimuth += (float)dx*0.1f; 
+         elevation += (float)dy*0.02f; 
 
          if (elevation > M_PI/2){
             elevation = -1*M_PI/2;
