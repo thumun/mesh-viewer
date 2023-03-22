@@ -32,6 +32,7 @@ public:
       shaders.push_back("normals");
       shaders.push_back("phong-vertex");
       shaders.push_back("phong-pixel");
+      shaders.push_back("toon");
       // add more shaders as make them 
 
       // loading the shaders at start of program 
@@ -139,13 +140,18 @@ public:
             shaderIndx -=1; 
          }
       }
-      cout << meshes[meshIndx]._filename << endl; 
-      cout << "maxbounds: " << meshes[meshIndx].maxBounds() << endl; 
-      cout << "minbounds: " << meshes[meshIndx].minBounds() << endl; 
+      // cout << meshes[meshIndx]._filename << endl; 
+      // cout << "maxbounds: " << meshes[meshIndx].maxBounds() << endl; 
+      // cout << "minbounds: " << meshes[meshIndx].minBounds() << endl; 
    }
 
    void draw() {
       renderer.beginShader(shaders[shaderIndx]);
+
+      // do make this better (?) - only initialize if 
+      // shaders[shaderIndx].find("phong") == true 
+
+      // for phong:
 
       //http://learnwebgl.brown37.net/09_lights/lights_combined.html
       // used above to find numbers for lights 
@@ -162,6 +168,9 @@ public:
       renderer.setUniform("Material.Kd", 0.54, 0.89, 0.63);
       renderer.setUniform("Material.Ks", 0.316228, 0.316228, 0.316228);
       renderer.setUniform("Material.Shininess", 0.1f);
+
+      // for toon: 
+      renderer.setUniform("LightPosition", 20, 20, 20);
 
       float aspect = ((float)width()) / height();
       renderer.perspective(glm::radians(60.0f), aspect, 0.1f, 50.0f);
