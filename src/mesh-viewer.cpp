@@ -78,8 +78,8 @@ public:
       camPos.z = r*sin(a)*cos(e);
    }
 
+   // if mouse is down and moving, then camera will move 
    void mouseMotion(int x, int y, int dx, int dy) {
-
       if(isMousePress){
 
          if (abs(dx) > abs(dy)){
@@ -88,7 +88,7 @@ public:
             } else { 
                azimuth += 0.1f; 
             }
-         } else { 
+         } else if (abs(dy) > abs(dx)) { 
             if (dy < 0){
                elevation -= 0.05f; 
             } else { 
@@ -96,30 +96,26 @@ public:
             }
          }
 
+         // clamp: 
+         if (elevation > M_PI/2){
+            elevation = -1*M_PI/2;
 
-         // if (elevation > M_PI/2){
-         //    elevation = -1*M_PI/2;
-
-         // } else if (elevation < -M_PI/2){
-         //    elevation = M_PI/2;
-         // }
+         } else if (elevation < -M_PI/2){
+            elevation = M_PI/2;
+         }
       }
 
    }
 
+   // when mouse down, isMousePressed is true (used for orbital cam)
    void mouseDown(int button, int mods) {
-      // moving camera backward - change r
-      // radius -= 1;
-      // computeCamPos(radius, azimuth, elevation);
       if (button == GLFW_MOUSE_BUTTON_LEFT){
          isMousePress = true; 
       }
    }
 
+   // when mouse up, isMousePressed is true (used for orbital cam)
    void mouseUp(int button, int mods) {
-      // moving camera forward - change r 
-      // radius += 1;
-      // computeCamPos(radius, azimuth, elevation);
       if (button == GLFW_MOUSE_BUTTON_LEFT){
          isMousePress = false; 
       }
