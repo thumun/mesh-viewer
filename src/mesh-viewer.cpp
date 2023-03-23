@@ -59,7 +59,8 @@ public:
       if (textures.size() > 1){
          textureIndx = 0; 
          for (int i = 1; i < textures.size(); i++){
-            renderer.loadTexture(textures[i], "../textures/"+textures[i]+".png", textureIndx+1);
+            renderer.loadTexture(textures[i], "../textures/"+textures[i]+".png", 
+                                 textureIndx+1);
             textureIndx+=1;
          }
       }
@@ -79,10 +80,6 @@ public:
 
    void mouseMotion(int x, int y, int dx, int dy) {
 
-      // mapping not look good 
-      // azimuth = acos(x/radius);
-      // elevation = asin(y/radius);
-
       if(isMousePress){
 
          if (abs(dx) > abs(dy)){
@@ -91,7 +88,6 @@ public:
             } else { 
                azimuth += 0.1f; 
             }
-            cout << "dx: " << dx << ", dy: " << dy << ", azimuth: " << azimuth << ", elevation: " << elevation << endl;
          } else { 
             if (dy < 0){
                elevation -= 0.05f; 
@@ -100,15 +96,13 @@ public:
             }
          }
 
-         // azimuth += (float)dx*0.1f; 
-         // elevation += (float)dy*0.02f; 
 
-         if (elevation > M_PI/2){
-            elevation = -1*M_PI/2;
+         // if (elevation > M_PI/2){
+         //    elevation = -1*M_PI/2;
 
-         } else if (elevation < -M_PI/2){
-            elevation = M_PI/2;
-         }
+         // } else if (elevation < -M_PI/2){
+         //    elevation = M_PI/2;
+         // }
       }
 
    }
@@ -227,15 +221,16 @@ public:
 
       //https://learnopengl.com/Lighting/Materials
       // http://devernay.free.fr/cours/opengl/materials.html
-      // above link has table of materials -- used below (jade)
-      renderer.setUniform("Material.Ka", 0.135, 0.2225, 0.1575);
-      renderer.setUniform("Material.Kd", 0.54, 0.89, 0.63);
-      renderer.setUniform("Material.Ks", 0.316228, 0.316228, 0.316228);
-      renderer.setUniform("Material.Shininess", 0.1f);
+      // above link has table of materials -- used below (pearl)
+      renderer.setUniform("Material.Ka", 0.25, 0.20725, 0.20725);
+      renderer.setUniform("Material.Kd", 1, 0.829, 0.829);
+      renderer.setUniform("Material.Ks", 0.296648, 0.296648, 0.296648);
+      renderer.setUniform("Material.Shininess", 0.088f);
 
       // for toon: 
       renderer.setUniform("LightPosition", 20, 20, 20);
       
+      // texture bool: 
       renderer.setUniform("isTexture", isTextured);
 
       float aspect = ((float)width()) / height();
