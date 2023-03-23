@@ -32,7 +32,6 @@ out vec2 uv;
 
 void main()
 {
-
    uv = vTextureCoords;
 
    vec3 tnorm = normalize( NormalMatrix * vNormals);

@@ -47,8 +47,9 @@ public:
 
       // source: https://pixabay.com/images/search/stars/
       // test 
-      textures.push_back("cow-uvs");
-      renderer.loadTexture("cow-uvs", "../textures/cow-uvs.png", 0);
+      textures.push_back("null");
+      textures.push_back("stars");
+      renderer.loadTexture("stars", "../textures/stars.png", 1);
 
       textureIndx = 0; // check last param of loadTexture
       // for (string t: textures){
@@ -77,15 +78,31 @@ public:
 
       if(isMousePress){
 
-         azimuth += (float)dx*0.1f; 
-         elevation += (float)dy*0.02f; 
-
-         if (elevation > M_PI/2){
-            elevation = -1*M_PI/2;
-
-         } else if (elevation < -M_PI/2){
-            elevation = M_PI/2;
+         if (abs(dx) > abs(dy)){
+            if (dx < 0){
+               azimuth -= 0.05f; 
+            } else { 
+               azimuth += 0.05f; 
+            }
+         } else { 
+            if (dy < 0){
+               elevation -= 0.01f; 
+            } else { 
+               elevation += 0.01f; 
+            }
          }
+
+         cout << "dx: " << dx << ", dy: " << dy << endl;
+
+         // azimuth += (float)dx*0.1f; 
+         // elevation += (float)dy*0.02f; 
+
+         // if (elevation > M_PI/2){
+         //    elevation = -1*M_PI/2;
+
+         // } else if (elevation < -M_PI/2){
+         //    elevation = M_PI/2;
+         // }
       }
 
    }
@@ -141,6 +158,13 @@ public:
       } else if (key == GLFW_KEY_DOWN){
          // moving camera backward - change r
          radius -= 0.5;
+      } else if ((key == GLFW_KEY_S && mods == GLFW_MOD_SHIFT)){
+         // going to previous shader 
+         if (shaderIndx == 0){
+            shaderIndx = shaders.size()-1;
+         } else { 
+            shaderIndx -=1; 
+         }
       } else if (key == GLFW_KEY_S){
          // cycling to next shader 
          if (shaderIndx == shaders.size()-1){
@@ -149,14 +173,24 @@ public:
             shaderIndx +=1; 
          }
          
-      } else if ((key == GLFW_KEY_S && mods == GLFW_MOD_SHIFT)){
+      } else if ((key == GLFW_KEY_T && mods == GLFW_MOD_SHIFT)){
          // going to previous shader 
-         if (shaderIndx == 0){
-            shaderIndx = shaders.size()-1;
+         if (textureIndx == 0){
+            textureIndx = textures.size()-1;
          } else { 
-            shaderIndx -=1; 
+            textureIndx -=1; 
+            if (textureIndx == 0) {isTextured = false;};
          }
-      }
+      } else if (key == GLFW_KEY_T){
+         // cycling to next shader 
+         if (textureIndx == textures.size()-1){
+            isTextured = false;
+            textureIndx = 0;
+         } else { 
+            textureIndx +=1; 
+         }
+         
+      } 
       // cout << meshes[meshIndx]._filename << endl; 
       // cout << "maxbounds: " << meshes[meshIndx].maxBounds() << endl; 
       // cout << "minbounds: " << meshes[meshIndx].minBounds() << endl; 
@@ -170,8 +204,13 @@ public:
 
       // for phong:
 
-      renderer.texture("diffuseTexture", "cow-uvs");
+      isTextured = false; 
 
+      if(textureIndx != 0){
+         renderer.texture("diffuseTexture", textures[textureIndx]);
+         isTextured = true; 
+      }
+      
       //http://learnwebgl.brown37.net/09_lights/lights_combined.html
       // used above to find numbers for lights 
       renderer.setUniform("Light.Position", 20, 20, 20, 1);
@@ -190,6 +229,8 @@ public:
 
       // for toon: 
       renderer.setUniform("LightPosition", 20, 20, 20);
+      
+      renderer.setUniform("isTexture", isTextured);
 
       float aspect = ((float)width()) / height();
       renderer.perspective(glm::radians(60.0f), aspect, 0.1f, 50.0f);
@@ -224,6 +265,7 @@ protected:
    float elevation = 0; 
    float radius = 10.0f; 
    bool isMousePress = false;
+   bool isTextured;
 
 private:
    int meshIndx; 
