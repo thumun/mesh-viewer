@@ -32,7 +32,7 @@ out vec2 uv;
 
 void main()
 {
-   uv = vTextureCoords;
+   uv = vPos.xy;//vTextureCoords;
 
    vec3 tnorm = normalize( NormalMatrix * vNormals);
    vec4 eyeCoords = ModelViewMatrix * vec4(vPos,1.0);
@@ -51,7 +51,7 @@ void main()
    vec3 spec = vec3(0.0);
    if( sDotN > 0.0 )
       spec = Light.Ls * Material.Ks *
-            pow( max( dot(r,v), 0.5 ), Material.Shininess);
+            pow( max( dot(r,v), 0.0 ), 80);//Material.Shininess);
    
    LightIntensity = ambient + diffuse + spec;
    gl_Position = MVP * vec4(vPos, 1.0);

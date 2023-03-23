@@ -46,16 +46,23 @@ public:
       }
 
       // source: https://pixabay.com/images/search/stars/
-      // test 
+      
       textures.push_back("null");
       textures.push_back("stars");
-      renderer.loadTexture("stars", "../textures/stars.png", 1);
+      textures.push_back("bricks");
 
-      textureIndx = 0; // check last param of loadTexture
       // for (string t: textures){
       //    renderer.loadTexture(t, "../textures/"+t+".png", textureIndx);
       //    textureIndx+=1;
       // }
+
+      if (textures.size() > 1){
+         textureIndx = 0; 
+         for (int i = 1; i < textures.size(); i++){
+            renderer.loadTexture(textures[i], "../textures/"+textures[i]+".png", textureIndx+1);
+            textureIndx+=1;
+         }
+      }
 
       meshIndx = 0; 
       shaderIndx = 0; 
@@ -64,7 +71,7 @@ public:
    }
 
    // maybe change floats to int in future
-   void computeCamPos(int r, int a, int e){
+   void computeCamPos(float r, float a, float e){
       camPos.x = r*cos(a)*cos(e);
       camPos.y = r*sin(e);
       camPos.z = r*sin(a)*cos(e);
@@ -80,29 +87,28 @@ public:
 
          if (abs(dx) > abs(dy)){
             if (dx < 0){
-               azimuth -= 0.05f; 
+               azimuth -= 0.1f; 
             } else { 
-               azimuth += 0.05f; 
+               azimuth += 0.1f; 
             }
+            cout << "dx: " << dx << ", dy: " << dy << ", azimuth: " << azimuth << ", elevation: " << elevation << endl;
          } else { 
             if (dy < 0){
-               elevation -= 0.01f; 
+               elevation -= 0.05f; 
             } else { 
-               elevation += 0.01f; 
+               elevation += 0.05f; 
             }
          }
-
-         cout << "dx: " << dx << ", dy: " << dy << endl;
 
          // azimuth += (float)dx*0.1f; 
          // elevation += (float)dy*0.02f; 
 
-         // if (elevation > M_PI/2){
-         //    elevation = -1*M_PI/2;
+         if (elevation > M_PI/2){
+            elevation = -1*M_PI/2;
 
-         // } else if (elevation < -M_PI/2){
-         //    elevation = M_PI/2;
-         // }
+         } else if (elevation < -M_PI/2){
+            elevation = M_PI/2;
+         }
       }
 
    }
@@ -240,7 +246,7 @@ public:
       vec3 x = cross(up, z);
       vec3 y = cross(z, x);
 
-      renderer.lookAt(camPos, lookPos, y);
+      renderer.lookAt(camPos, lookPos, vec3(0,1,0));
 
       // renderer.lookAt(eyePos, lookPos, up);
 

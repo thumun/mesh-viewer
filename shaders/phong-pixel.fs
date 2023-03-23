@@ -42,7 +42,7 @@ void main()
    vec3 spec = vec3(0.0);
    if( sDotN > 0.0 )
       spec = Light.Ls * Material.Ks *
-            pow( max( dot(r,v), 0.5 ), Material.Shininess);
+            pow( max( dot(r,v), 0.0 ), 3); //Material.Shininess);
    
    vec3 LightIntensity = ambient + diffuse + spec;
 
