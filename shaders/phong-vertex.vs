@@ -28,9 +28,13 @@ struct MaterialInfo {
 uniform MaterialInfo Material;
 
 out vec3 LightIntensity;
+out vec2 uv; 
 
 void main()
 {
+
+   uv = vTextureCoords;
+
    vec3 tnorm = normalize( NormalMatrix * vNormals);
    vec4 eyeCoords = ModelViewMatrix * vec4(vPos,1.0);
 

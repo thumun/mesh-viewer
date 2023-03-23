@@ -31,9 +31,9 @@ void main()
 
     // trying the white outline thing 
     // nope logic wrong somewhere 
-    // if (vecPos < 0.2f){
-    //     color = vec4(1.0, 1.0, 1.0, 1.0);
-    // }
+    if (vecPos < 0.001f){
+        color = vec4(1.0, 1.0, 1.0, 1.0);
+    }
 
     FragColor = color;
 }

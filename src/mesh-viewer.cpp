@@ -28,20 +28,36 @@ public:
       for (std::string file : dir){
          meshes.push_back(PLYMesh("../models/" + file));
       }
+
+      // dir = GetFilenamesInDir("../shaders", "vs");
+      // for (std::string file : dir){
+      //    // cout << file.substr(0, file.length()-3) << endl; 
+      //    shaders.push_back(file.substr(0, file.length()-3));
+      // }
       
       shaders.push_back("normals");
       shaders.push_back("phong-vertex");
       shaders.push_back("phong-pixel");
       shaders.push_back("toon");
-      // add more shaders as make them 
 
       // loading the shaders at start of program 
       for (string s: shaders){
          renderer.loadShader(s, "../shaders/"+s+".vs", "../shaders/"+s+".fs");
       }
 
+      // source: https://pixabay.com/images/search/stars/
+      // test 
+      textures.push_back("stars");
+
+      textureIndx = 0; // check last param of loadTexture
+      for (string t: textures){
+         renderer.loadTexture(t, "../textures/"+t+".png", textureIndx);
+         textureIndx+=1;
+      }
+
       meshIndx = 0; 
       shaderIndx = 0; 
+      textureIndx = 0;
 
    }
 
@@ -153,6 +169,8 @@ public:
 
       // for phong:
 
+      renderer.texture("diffuseTexture", "stars");
+
       //http://learnwebgl.brown37.net/09_lights/lights_combined.html
       // used above to find numbers for lights 
       renderer.setUniform("Light.Position", 20, 20, 20, 1);
@@ -196,6 +214,7 @@ protected:
    PLYMesh mesh;
    std::vector<PLYMesh> meshes; 
    std::vector<string> shaders; 
+   std::vector<string> textures; 
    vec3 eyePos = vec3(10, 0, 0);
    vec3 lookPos = vec3(0, 0, 0);
    vec3 up = vec3(0, 1, 0);
@@ -208,6 +227,7 @@ protected:
 private:
    int meshIndx; 
    int shaderIndx; 
+   int textureIndx;
 };
 
 int main(int argc, char** argv)

@@ -19,6 +19,6 @@ void main(void)
     //gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
 
     norm = normalize(NormalMatrix * vNormals);
-    vecPos = dot(vPos, vNormals);
+    vecPos = dot(normalize(vPos), normalize(vNormals));
     gl_Position = MVP * vec4(vPos, 1.0);
 }
