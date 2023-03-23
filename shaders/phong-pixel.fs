@@ -30,7 +30,8 @@ void main()
 
    vec3 s = normalize(vec3(Light.Position - eyeCoords));
    vec3 v = normalize(-eyeCoords.xyz);
-   vec3 r = reflect( -s, tnorm );
+   //vec3 r = reflect( -s, tnorm );
+   vec3 r = 2*dot(s, tnorm)*tnorm - s;
 
    vec3 ambient = Light.La * Material.Ka;
 
@@ -41,7 +42,7 @@ void main()
    vec3 spec = vec3(0.0);
    if( sDotN > 0.0 )
       spec = Light.Ls * Material.Ks *
-            pow( max( dot(r,v), 0.0 ), Material.Shininess);
+            pow( max( dot(r,v), 0.5 ), Material.Shininess);
    
    vec3 LightIntensity = ambient + diffuse + spec;
 

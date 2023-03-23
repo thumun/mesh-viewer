@@ -9,7 +9,9 @@ out vec4 FragColor;
 
 void main()
 {
-   vec3 c = texture(diffuseTexture, uv*10.0f).xyz;
-   vec3 color = LightIntensity*c;
-   FragColor = vec4(color, 1.0);
+   //vec3 c = texture(diffuseTexture, uv).xyz;
+   //vec3 color = LightIntensity*c;
+   //FragColor = vec4(color, 1.0);
+
+   FragColor = vec4(LightIntensity, 1.0);
 }

@@ -47,13 +47,14 @@ public:
 
       // source: https://pixabay.com/images/search/stars/
       // test 
-      textures.push_back("stars");
+      textures.push_back("cow-uvs");
+      renderer.loadTexture("cow-uvs", "../textures/cow-uvs.png", 0);
 
       textureIndx = 0; // check last param of loadTexture
-      for (string t: textures){
-         renderer.loadTexture(t, "../textures/"+t+".png", textureIndx);
-         textureIndx+=1;
-      }
+      // for (string t: textures){
+      //    renderer.loadTexture(t, "../textures/"+t+".png", textureIndx);
+      //    textureIndx+=1;
+      // }
 
       meshIndx = 0; 
       shaderIndx = 0; 
@@ -169,7 +170,7 @@ public:
 
       // for phong:
 
-      renderer.texture("diffuseTexture", "stars");
+      renderer.texture("diffuseTexture", "cow-uvs");
 
       //http://learnwebgl.brown37.net/09_lights/lights_combined.html
       // used above to find numbers for lights 
