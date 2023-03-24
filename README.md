@@ -44,8 +44,24 @@ mesh-viewer/build $ ../bin/mesh-viewer
 
 ## Demo of basic features
 
-TODO: Document the core features of your viewer (shaders + models)
+Can cycle through the models using 'n' or 'N' (to go back). 
+
+[insert]
+
+Can cycle through shaders using 's' or 'S' (to go back). 
+
+Normals shader: 
+
+Phong-vertex shader: 
+
+Phong-pixel shader: 
 
 ## Unique features 
 
-TODO: Show the unique features you made
+Toon Shader: 
+
+Textures: 
+Can cycle through textures using 't' or 'T' (to go back). 
+These textures are tiled (if the model is too big.) 
+
+Added personal model of original character: 
