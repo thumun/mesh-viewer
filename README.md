@@ -77,4 +77,5 @@ These textures are tiled (if the model is too big.)
 ![texturing](https://github.com/thumun/mesh-viewer/blob/main/images/textures.gif)
 
 Added personal model of original character: 
-!(niru](https://github.com/thumun/mesh-viewer/blob/main/images/Niru.gif)
+![niru](https://github.com/thumun/mesh-viewer/blob/main/images/Niru.gif)
+
