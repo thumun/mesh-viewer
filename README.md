@@ -2,7 +2,7 @@
 
 Implements a simple PLY viewer
 
-TODO: Add a representative image for your project here
+![cupofspace](https://github.com/thumun/mesh-viewer/blob/main/images/cup-noshader.png)
 
 ## How to build
 
