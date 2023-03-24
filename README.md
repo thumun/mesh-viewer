@@ -46,22 +46,30 @@ mesh-viewer/build $ ../bin/mesh-viewer
 
 Can cycle through the models using 'n' or 'N' (to go back). 
 
-[insert]
-
 Can cycle through shaders using 's' or 'S' (to go back). 
+
+![shaders](https://github.com/thumun/mesh-viewer/blob/main/images/general.gif)
 
 Normals shader: 
 
+![normals](https://github.com/thumun/mesh-viewer/blob/main/images/normals.gif)
+
 Phong-vertex shader: 
 
+![Phong-vertex](https://github.com/thumun/mesh-viewer/blob/main/images/phongvertex.gif)
+
 Phong-pixel shader: 
+
+![Phong-pixel](https://github.com/thumun/mesh-viewer/blob/main/images/phongpixel.gif)
 
 ## Unique features 
 
 Toon Shader: 
 
+![toon](https://github.com/thumun/mesh-viewer/blob/main/images/toonshading.gif)
+
 Textures: 
 Can cycle through textures using 't' or 'T' (to go back). 
 These textures are tiled (if the model is too big.) 
 
-Added personal model of original character: 
+![texturing](https://github.com/thumun/mesh-viewer/blob/main/images/textures.gif)
