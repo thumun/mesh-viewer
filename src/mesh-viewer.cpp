@@ -1,7 +1,15 @@
 //--------------------------------------------------
-// Author:
-// Date:
-// Description: Loads PLY files in ASCII format
+// Author: Neha Thumu
+// Date: 3/23/2023
+// Description: Displays PLY files in a 3D mesh viewer 
+// Able to cycle between the models in the models folder using n/N
+// can view models at different angles by moving camera (hold mouse and move)
+// can zoom in/out with up/down arrow keys
+// 
+// Able to render models using the following shaders: (cycling: s/S)
+// Normals, Phong-vertex, Phong-pixel, and Toon Shader 
+// 
+// Can cycle between textures in texture folder using t/T
 //--------------------------------------------------
 
 #include <cmath>

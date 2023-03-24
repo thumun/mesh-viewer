@@ -1,7 +1,12 @@
 //--------------------------------------------------
-// Author:
-// Date:
+// Author: Neha Thumu
+// Date: 3/23/2023
 // Description: Loads PLY files in ASCII format
+// Notable funcs: 
+// Able to get the max and min bounds of meshes 
+// can get the positions and normals as vectors 
+// getScaleRatio: scales a model to fit in 10x10x10 window
+// getTranslateVal: centers a model at origin 
 //--------------------------------------------------
 
 #ifndef plymeshmodel_H_

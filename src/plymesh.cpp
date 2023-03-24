@@ -1,7 +1,9 @@
 //--------------------------------------------------
-// Author:
-// Date:
+// Author: Neha Thumu
+// Date: 3/23/2023
 // Description: Loads PLY files in ASCII format
+// Also has useful extension methods like getting max and min bounds,  
+// centering a model, and scaling a model to fit in 10x10x10 window 
 //--------------------------------------------------
 
 #include "plymesh.h"
