@@ -60,6 +60,7 @@ public:
       //    textureIndx+=1;
       // }
 
+      // loading all textures at start 
       if (textures.size() > 1){
          textureIndx = 0; 
          for (int i = 1; i < textures.size(); i++){
@@ -75,6 +76,7 @@ public:
 
    }
 
+   // based on equations 
    void computeCamPos(float r, float a, float e){
       camPos.x = r*cos(a)*cos(e);
       camPos.y = r*sin(e);
@@ -173,7 +175,7 @@ public:
          }
          
       } else if ((key == GLFW_KEY_T && mods == GLFW_MOD_SHIFT)){
-         // going to previous shader 
+         // going to previous texture 
          if (textureIndx == 0){
             textureIndx = textures.size()-1;
          } else { 
@@ -181,7 +183,7 @@ public:
             if (textureIndx == 0) {isTextured = false;};
          }
       } else if (key == GLFW_KEY_T){
-         // cycling to next shader 
+         // cycling to next texture 
          if (textureIndx == textures.size()-1){
             isTextured = false;
             textureIndx = 0;
@@ -190,16 +192,10 @@ public:
          }
          
       } 
-      // cout << meshes[meshIndx]._filename << endl; 
-      // cout << "maxbounds: " << meshes[meshIndx].maxBounds() << endl; 
-      // cout << "minbounds: " << meshes[meshIndx].minBounds() << endl; 
    }
 
    void draw() {
       renderer.beginShader(shaders[shaderIndx]);
-
-      // do make this better (?) - only initialize if 
-      // shaders[shaderIndx].find("phong") == true 
 
       // for phong:
 
@@ -225,9 +221,6 @@ public:
       renderer.setUniform("Material.Kd", 1, 0.829, 0.829);
       renderer.setUniform("Material.Ks", 0.296648, 0.296648, 0.296648);
       renderer.setUniform("Material.Shininess", 0.088f);
-
-      // for toon: 
-      renderer.setUniform("LightPosition", 20, 20, 20);
       
       // texture bool: 
       renderer.setUniform("isTexture", isTextured);
@@ -275,7 +268,7 @@ private:
 
 int main(int argc, char** argv)
 {
-   MeshViewer viewer;
+   MeshViewer viewer; 
    viewer.run();
    return 0;
 }

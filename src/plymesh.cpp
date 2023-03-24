@@ -32,16 +32,14 @@ namespace agl {
 
    bool PLYMesh::load(const std::string& filename) {
       if (_positions.size() != 0) {
-         std::cout << "WARNING: Cannot load different files with the same PLY mesh\n";
+         std::cout 
+            << "WARNING: Cannot load different files with the same PLY mesh\n";
          return false;
       }
       // reading file inputted 
       std::ifstream plyFile; 
       std::string line; 
       plyFile.open(filename);
-
-      // check nullptr for plyfile? 
-      // there's prbly a better way to read header 
 
       int lineCount = 0; 
       std::vector<string> lineItems;
@@ -53,7 +51,6 @@ namespace agl {
       if (plyFile.is_open()) {
 
          getline(plyFile, line);
-         // cout << line.find("ply") << endl;
          if (line.find("ply") == string::npos){
             // cout << "skipped:  " << line << endl;
             return false;
@@ -111,8 +108,6 @@ namespace agl {
                _normals.push_back(std::stof(lineItems[4])); // ny
                _normals.push_back(std::stof(lineItems[5])); // nz
 
-               // cout << "vertex: " << lineItems[0] << ", " << lineItems[1] << ", " << lineItems[2] << endl; 
-
                verticiesNum -= 1; 
             } else if (polygonNum > 0){
                getline(plyFile, line);
@@ -121,7 +116,6 @@ namespace agl {
                _faces.push_back(std::stoi(lineItems[2]));
                _faces.push_back(std::stoi(lineItems[3]));
 
-               // cout << "face: " << lineItems[1] << ", " << lineItems[2] << ", " << lineItems[3] << endl;
                polygonNum -= 1;  
             } else {
                break;
@@ -167,12 +161,10 @@ namespace agl {
       return max; 
    }
 
-   // am i allowed to change this 
    int PLYMesh::numVertices() const {
       return _positions.size()/3;
    }
 
-   // am i allowed to change this 
    int PLYMesh::numTriangles() const {
       return _faces.size()/3;
    }
