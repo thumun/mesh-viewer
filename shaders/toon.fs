@@ -1,8 +1,27 @@
 #version 400
 
-uniform vec3 LightPosition;
-in vec3 norm;
-in float vecPos; 
+in vec4 pEye; 
+in vec3 nEye; 
+in vec3 v; 
+in vec3 n; 
+
+struct LightInfo {
+ vec4 Position; // Light position in eye coords.
+ vec3 La; // Ambient light intensity
+ vec3 Ld; // Diffuse light intensity
+ vec3 Ls; // Specular light intensity
+};
+
+uniform LightInfo Light;
+
+struct MaterialInfo {
+ vec3 Ka; // Ambient reflectivity
+ vec3 Kd; // Diffuse reflectivity
+ vec3 Ks; // Specular reflectivity
+ float Shininess; // Specular shininess factor
+};
+
+uniform MaterialInfo Material;
 
 out vec4 FragColor;
 
@@ -11,10 +30,13 @@ out vec4 FragColor;
 
 void main()
 {
-    float intensity;
-	vec4 color;
+   vec3 tnorm = nEye;
+   vec4 eyeCoords = pEye;
 
-	intensity = dot(LightPosition,norm);
+   vec3 s = normalize(vec3(Light.Position - eyeCoords));
+   
+    float intensity = dot(s,tnorm);
+    vec4 color; 
 
 	if (intensity > 0.95f){
 		color = vec4(1.0,0.5,0.5,1.0);
@@ -29,11 +51,11 @@ void main()
         color = vec4(0.2,0.1,0.1,1.0); 
     }
 
-    // trying the white outline thing 
-    // nope logic wrong somewhere 
-    if (vecPos < 0.001f){
-        color = vec4(1.0, 1.0, 1.0, 1.0);
-    }
+    // looks bad with the white outline thing 
+    // if (dot(normalize(v), normalize(n)) < 0.00001f){
+    //     color = vec4(1.0, 1.0, 1.0, 1.0);
+    // }
 
     FragColor = color;
+
 }

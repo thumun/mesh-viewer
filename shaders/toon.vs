@@ -9,16 +9,18 @@ uniform mat4 ModelViewMatrix;
 uniform mat4 MVP;
 uniform bool HasUV;
 
-out vec3 norm;
-out float vecPos; 
+out vec4 pEye; 
+out vec3 nEye; 
+out vec3 v; 
+out vec3 n; 
 
-void main(void)
+void main()
 {
-    //vec3 norm = normalize(NormalMatrix * gl_Normal);
-    //gl_ClipVertex = gl_ModelViewMatrix * gl_Vertex;
-    //gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+   gl_Position = MVP * vec4(vPos, 1.0);
 
-    norm = normalize(NormalMatrix * vNormals);
-    vecPos = dot(normalize(vPos), normalize(vNormals));
-    gl_Position = MVP * vec4(vPos, 1.0);
+   pEye = ModelViewMatrix * vec4(vPos, 1.0);
+   nEye = normalize(NormalMatrix * vNormals);
+
+   v = vPos; 
+   n = vNormals;
 }

@@ -71,14 +71,13 @@ public:
 
    }
 
-   // maybe change floats to int in future
    void computeCamPos(float r, float a, float e){
       camPos.x = r*cos(a)*cos(e);
       camPos.y = r*sin(e);
       camPos.z = r*sin(a)*cos(e);
    }
 
-   // if mouse is down and moving, then camera will move 
+   // if mouse is down and moving, then camera will move accordingly
    void mouseMotion(int x, int y, int dx, int dy) {
       if(isMousePress){
 
