@@ -44,12 +44,16 @@ public:
       for (string s: shaders){
          renderer.loadShader(s, "../shaders/"+s+".vs", "../shaders/"+s+".fs");
       }
-
-      // source: https://pixabay.com/images/search/stars/
       
       textures.push_back("null");
+      // pixabay.com/images/search/stars/
       textures.push_back("stars");
+      // src: pixmaps lab 
       textures.push_back("bricks");
+      //naldzgraphics.net/free-seamless-grass-textures/
+      textures.push_back("grass");
+      //www.istockphoto.com/illustrations/blue-sky-with-clouds-repeating-pattern
+      textures.push_back("clouds");
 
       // for (string t: textures){
       //    renderer.loadTexture(t, "../textures/"+t+".png", textureIndx);
