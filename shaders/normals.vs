@@ -15,6 +15,6 @@ void main()
 {
 
    gl_Position = MVP * vec4(vPos, 1.0);
-   normalOutput = vec3( ((vNormal.x + 1)/2), ((vNormal.y + 1)/2), ((vNormal.z + 1)/2) );
+   normalOutput = vec3(((vNormal.x + 1)/2),((vNormal.y+1)/2),((vNormal.z+1)/2));
 
 }

@@ -76,6 +76,12 @@ public:
 
    }
 
+   ~MeshViewer(){
+      meshes.clear();
+      shaders.clear();
+      textures.clear();
+   }
+
    // based on equations 
    void computeCamPos(float r, float a, float e){
       camPos.x = r*cos(a)*cos(e);
