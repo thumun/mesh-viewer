@@ -45,6 +45,8 @@ mesh-viewer/build $ ../bin/mesh-viewer
 ## Demo of basic features
 
 Can cycle through the models using 'n' or 'N' (to go back). 
+Can zoom in on models using the up/down arrows. 
+Can also rotate/view models at different angles by holding down the mouse and moving. 
 
 Can cycle through shaders using 's' or 'S' (to go back). 
 
